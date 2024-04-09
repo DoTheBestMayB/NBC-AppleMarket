@@ -4,8 +4,11 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:background">@color/white</item>
-        <item name="android:fontFamily">@font/font_family</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:imageButtonStyle">@style/customImageButtonFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
     </style>
+    
 
     <style name="roundedCornersImageView" parent="">
         <item name="shapeAppearance">@style/ShapeAppearanceOverlay.App.circleImageView</item>
