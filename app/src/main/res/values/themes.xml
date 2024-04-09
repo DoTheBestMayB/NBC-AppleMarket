@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:background">@color/white</item>
+        <item name="android:fontFamily">@font/font_family</item>
     </style>
 
     <style name="Theme.NBCAppleMarket" parent="Base.Theme.NBCAppleMarket" />
