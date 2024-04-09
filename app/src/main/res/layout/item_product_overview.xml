@@ -56,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/gray_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="NN" />
@@ -76,7 +75,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:textColor="@color/gray_600"
         app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintEnd_toStartOf="@id/iv_like"
         app:layout_constraintTop_toTopOf="@id/iv_like"
@@ -90,8 +88,7 @@
         android:src="@drawable/conversation"
         app:layout_constraintBottom_toBottomOf="@id/tv_chat"
         app:layout_constraintEnd_toStartOf="@id/tv_chat"
-        app:layout_constraintTop_toTopOf="@id/tv_chat"
-        app:tint="@color/gray_600" />
+        app:layout_constraintTop_toTopOf="@id/tv_chat"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
