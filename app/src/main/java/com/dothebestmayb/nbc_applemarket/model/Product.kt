@@ -1,7 +1,10 @@
 package com.dothebestmayb.nbc_applemarket.model
 
 import android.net.Uri
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Product(
     val name: String,
     val imageUri: Uri,
@@ -11,8 +14,8 @@ data class Product(
     val location: String,
     val like: Int,
     val numberOfChat: Int,
-) {
-    val uuid: Int = count // 코드를 작성하는 사람이 uuid를 직접 지정하지 않도록 막기 위해 block 내부에 선언
+    val uuid: Int = count,
+): Parcelable {
 
     companion object {
 
