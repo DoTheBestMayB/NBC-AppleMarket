@@ -10,17 +10,27 @@ import com.dothebestmayb.nbc_applemarket.databinding.ItemProductOverviewBinding
 import com.dothebestmayb.nbc_applemarket.model.Product
 import com.dothebestmayb.nbc_applemarket.util.toStringWithComma
 
-class ProductAdapter : ListAdapter<Product, ProductAdapter.ViewHolder>(diffCallback) {
+class ProductAdapter(
+    private val onClickListener: ProductOnClickListener,
+) : ListAdapter<Product, ProductAdapter.ViewHolder>(diffCallback) {
 
     inner class ViewHolder(private val binding: ItemProductOverviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) = with(binding) {
+            setData(product)
+            setVisibility(product)
+            setListener(product)
+        }
+
+        private fun setData(product: Product) = with(binding) {
             ivThumbnail.setImageURI(product.imageUri)
             tvName.text = product.name
             tvLocation.text = product.location
             tvPrice.text = product.price.toStringWithComma()
+        }
 
+        private fun setVisibility(product: Product) = with(binding) {
             val chatVisibility = if (product.numberOfChat == 0) {
                 View.GONE
             } else {
@@ -38,6 +48,12 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ViewHolder>(diffCallb
             }
             tvLike.visibility = likeVisibility
             ivChat.visibility = likeVisibility
+        }
+
+        private fun setListener(product: Product) {
+            binding.root.setOnClickListener {
+                onClickListener.onClick(product)
+            }
         }
     }
 
