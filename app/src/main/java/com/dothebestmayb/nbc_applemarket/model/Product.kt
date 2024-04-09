@@ -12,7 +12,13 @@ data class Product(
     val like: Int,
     val numberOfChat: Int,
 ) {
+    val uuid: Int = count // 코드를 작성하는 사람이 uuid를 직접 지정하지 않도록 막기 위해 block 내부에 선언
+
     companion object {
+
+        @Volatile
+        private var count = 0
+            get() = field++
 
         fun getDummyData(): List<Product> = listOf(
             Product(

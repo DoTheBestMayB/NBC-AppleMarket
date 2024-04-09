@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dothebestmayb.nbc_applemarket.databinding.FragmentMainPageBinding
+import com.dothebestmayb.nbc_applemarket.model.Product
 
 class MainPageFragment : Fragment() {
 
@@ -13,11 +14,34 @@ class MainPageFragment : Fragment() {
     private val binding: FragmentMainPageBinding
         get() = _binding!!
 
+    private val adapter by lazy { ProductAdapter() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainPageBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setRecyclerView()
+        insertDummyData()
+    }
+
+    private fun setRecyclerView() {
+        binding.rvProducts.adapter = adapter
+    }
+
+    private fun insertDummyData() {
+        adapter.submitList(Product.getDummyData())
+    }
+
+    override fun onDestroy() {
+        _binding = null
+
+        super.onDestroy()
     }
 }
