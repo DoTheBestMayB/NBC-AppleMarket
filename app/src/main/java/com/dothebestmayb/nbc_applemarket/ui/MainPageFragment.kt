@@ -25,10 +25,10 @@ class MainPageFragment : Fragment() {
             .setTitle("종료")
             .setMessage("정말 종료하시겠습니까?")
             .setIcon(R.drawable.conversation)
-            .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
 
             }
-            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
                 requireActivity().finish()
             }
     }
@@ -58,6 +58,7 @@ class MainPageFragment : Fragment() {
 
     private fun setRecyclerView() {
         binding.rvProducts.adapter = adapter
+        binding.rvProducts.addItemDecoration(SimpleDividerItemDecoration(requireContext(), R.drawable.line_divider))
 
         val products = ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
         adapter.submitList(products)
