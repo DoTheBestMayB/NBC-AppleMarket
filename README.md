@@ -9,7 +9,7 @@
 ## 메인 페이지 - MainPageFragment
 
 - [x] 상품 데이터는 dummy data 사용
-- [ ] RecyclerView를 이용해서 제품을 랜덤한 순서로 표시
+- [x] RecyclerView를 이용해서 제품을 랜덤한 순서로 표시
 - [x] 상품 이미지는 모서리를 라운드로 처리
 - [x] 상품 이름은 최대 두 줄이고, 초과하면 ellipsize 적용
 - [ ] 뒤로가기 버튼 누르면 앱 종료 여부를 물어보는 다이얼로그 띄우기

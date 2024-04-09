@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dothebestmayb.nbc_applemarket.data.ProductManager
 import com.dothebestmayb.nbc_applemarket.databinding.FragmentMainPageBinding
 import com.dothebestmayb.nbc_applemarket.model.Product
+import kotlin.random.Random
 
 class MainPageFragment : Fragment() {
 
@@ -27,16 +29,19 @@ class MainPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setRecyclerView()
         insertDummyData()
+        setRecyclerView()
     }
 
     private fun setRecyclerView() {
         binding.rvProducts.adapter = adapter
+
+        val products = ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
+        adapter.submitList(products)
     }
 
     private fun insertDummyData() {
-        adapter.submitList(Product.getDummyData())
+        ProductManager.addProduct(Product.getDummyData())
     }
 
     override fun onDestroy() {
