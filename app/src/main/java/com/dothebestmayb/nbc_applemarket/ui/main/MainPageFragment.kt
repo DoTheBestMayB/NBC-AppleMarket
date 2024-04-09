@@ -1,12 +1,11 @@
 package com.dothebestmayb.nbc_applemarket.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.fragment.app.add
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.dothebestmayb.nbc_applemarket.R
 import com.dothebestmayb.nbc_applemarket.data.ProductManager
@@ -38,7 +37,6 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
 
     override fun onClick(product: Product) {
         parentFragmentManager.commit {
-            setReorderingAllowed(true)
 
             val bundle = Bundle().apply {
                 putParcelable(DetailPageFragment.BUNDLE_KEY_FOR_PRODUCT, product)
@@ -46,7 +44,9 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
             val fragment = DetailPageFragment().apply {
                 arguments = bundle
             }
-            add(R.id.fragment_container_view, fragment)
+            replace(R.id.fragment_container_view, fragment)
+            setReorderingAllowed(true)
+            addToBackStack(null)
         }
     }
 
