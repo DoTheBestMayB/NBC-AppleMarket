@@ -1,4 +1,4 @@
-package com.dothebestmayb.nbc_applemarket.ui
+package com.dothebestmayb.nbc_applemarket.ui.main
 
 import android.content.Context
 import android.graphics.Canvas

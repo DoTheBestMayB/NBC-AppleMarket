@@ -1,4 +1,4 @@
-package com.dothebestmayb.nbc_applemarket.ui
+package com.dothebestmayb.nbc_applemarket.ui.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
