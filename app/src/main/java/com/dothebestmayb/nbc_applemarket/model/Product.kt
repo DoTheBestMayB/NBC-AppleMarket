@@ -23,7 +23,7 @@ data class Product(
         private var count = 0
             get() = field++
 
-        fun getDummyData(): List<Product> = listOf(
+        private val dummyData = listOf(
             Product(
                 name = "산진 한달된 선풍기 팝니다",
                 imageUri = Uri.parse("android.resource://com.dothebestmayb.nbc_applemarket/drawable/sample1"),
@@ -126,5 +126,6 @@ data class Product(
             ),
         )
 
+        fun getDummyData(): List<Product> = dummyData
     }
 }

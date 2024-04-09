@@ -1,8 +1,8 @@
 package com.dothebestmayb.nbc_applemarket
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.dothebestmayb.nbc_applemarket.databinding.ActivityMainBinding

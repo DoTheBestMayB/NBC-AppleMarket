@@ -34,6 +34,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
                 requireActivity().finish()
             }
     }
+    private var isDummyDataInserted = false
 
     override fun onClick(product: Product) {
         parentFragmentManager.commit {
@@ -54,8 +55,11 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            dialog.show()
+            if (isEnabled) {
+                dialog.show()
+            }
         }
+        insertDummyData()
     }
 
     override fun onCreateView(
@@ -69,16 +73,24 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        insertDummyData()
         setRecyclerView()
     }
 
     private fun setRecyclerView() {
         binding.rvProducts.adapter = adapter
-        binding.rvProducts.addItemDecoration(SimpleDividerItemDecoration(requireContext(), R.drawable.line_divider))
+        binding.rvProducts.addItemDecoration(
+            SimpleDividerItemDecoration(
+                requireContext(),
+                R.drawable.line_divider
+            )
+        )
 
-        val products = ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
-        adapter.submitList(products)
+        if (isDummyDataInserted.not()) {
+            val products =
+                ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
+            adapter.submitList(products)
+            isDummyDataInserted = true
+        }
     }
 
     private fun insertDummyData() {

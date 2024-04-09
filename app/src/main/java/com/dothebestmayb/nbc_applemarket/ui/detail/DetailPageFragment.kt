@@ -35,8 +35,6 @@ class DetailPageFragment : Fragment() {
         }
     }
 
-    val TAG = DetailPageFragment::class.java.simpleName
-
     private fun extractDataFromIntent(): Boolean {
         val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(BUNDLE_KEY_FOR_PRODUCT, Product::class.java)
