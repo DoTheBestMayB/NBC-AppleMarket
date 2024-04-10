@@ -19,4 +19,9 @@
     <string name="permission_positive">허용</string>
     <string name="product_notification_alert_title">키워드 알림</string>
     <string name="product_notification_alert_message">설정한 키워드에 대한 알림이 도착했습니다!!</string>
+    <string name="finish_dialog_title">종료</string>
+    <string name="finish_dialog_message">정말 종료하시겠습니까?</string>
+    <string name="delete_dialog_title">상품 삭제</string>
+    <string name="delete_dialog_message">상품을 정말로 삭제하시겠습니까?</string>
+    <string name="chat">채팅하기</string>
 </resources>

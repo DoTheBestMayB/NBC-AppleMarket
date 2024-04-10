@@ -94,8 +94,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     private val adapter by lazy { ProductAdapter(this) }
     private val finishDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("종료")
-            .setMessage("정말 종료하시겠습니까?")
+            .setTitle(getString(R.string.finish_dialog_title))
+            .setMessage(getString(R.string.finish_dialog_message))
             .setIcon(R.drawable.conversation)
             .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
 
@@ -107,8 +107,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
 
     private val deleteDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("상품 삭제")
-            .setMessage("상품을 정말로 삭제하시겠습니까?")
+            .setTitle(getString(R.string.delete_dialog_title))
+            .setMessage(getString(R.string.delete_dialog_message))
             .setIcon(R.drawable.conversation)
             .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
 
