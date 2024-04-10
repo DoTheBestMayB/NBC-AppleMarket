@@ -40,6 +40,7 @@ class DetailPageFragment : Fragment() {
             return
         }
         initView()
+        setListener()
     }
 
     private fun extractDataFromIntent(): Boolean {
@@ -85,6 +86,12 @@ class DetailPageFragment : Fragment() {
         tvIntroduction.text = product.introduction
 
         tvPrice.text = product.price.toStringWithComma()
+    }
+
+    private fun setListener() = with(binding) {
+        ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroy() {
