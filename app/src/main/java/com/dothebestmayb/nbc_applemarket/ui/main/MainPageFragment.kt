@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.dothebestmayb.nbc_applemarket.R
 import com.dothebestmayb.nbc_applemarket.data.ProductManager
+import com.dothebestmayb.nbc_applemarket.data.UserManager
 import com.dothebestmayb.nbc_applemarket.databinding.FragmentMainPageBinding
 import com.dothebestmayb.nbc_applemarket.model.Product
+import com.dothebestmayb.nbc_applemarket.model.User
 import com.dothebestmayb.nbc_applemarket.ui.detail.DetailPageFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.random.Random
@@ -95,6 +97,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
 
     private fun insertDummyData() {
         ProductManager.addProduct(Product.getDummyData())
+        UserManager.addUser(User.getDummyData())
     }
 
     override fun onDestroy() {
