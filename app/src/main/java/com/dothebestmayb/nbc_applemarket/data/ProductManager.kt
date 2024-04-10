@@ -19,4 +19,8 @@ object ProductManager {
     fun removeProduct(product: Product) {
         products.remove(product.uuid)
     }
+
+    fun updateProduct(product: Product) {
+        products[product.uuid] = product
+    }
 }

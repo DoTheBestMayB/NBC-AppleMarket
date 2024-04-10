@@ -7,4 +7,5 @@
     <color name="gray_300">#DCDEE3</color>
     <color name="primary">#FF6F0F</color>
     <color name="primary_pressed">#0000FF</color>
+    <color name="snackbar_color">#FF323232</color>
 </resources>

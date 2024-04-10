@@ -1,16 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.NBCAppleMarket" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:background">@color/white</item>
-        <item name="android:windowSplashScreenBackground" tools:targetApi="31" >@color/white</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/white</item>
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:imageButtonStyle">@style/customImageButtonFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
         <item name="colorPrimary">@color/primary</item>
+        <item name="snackbarStyle">@style/SnackbarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackbarTextViewStyle</item>
     </style>
-    
 
     <style name="roundedCornersImageView" parent="">
         <item name="shapeAppearance">@style/ShapeAppearanceOverlay.App.circleImageView</item>
@@ -20,5 +19,15 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>
     </style>
+
+    <style name="SnackbarStyle" parent="Widget.Material3.Snackbar">
+        <item name="android:background">@color/snackbar_color</item>
+    </style>
+
+    <style name="SnackbarTextViewStyle" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/snackbar_color</item>
+    </style>
+
     <style name="Theme.NBCAppleMarket" parent="Base.Theme.NBCAppleMarket" />
 </resources>
