@@ -5,4 +5,5 @@
     <color name="gray_600">#868B94</color>
     <color name="gray_900">#212124</color>
     <color name="gray_300">#DCDEE3</color>
+    <color name="primary">#FF6F0F</color>
 </resources>

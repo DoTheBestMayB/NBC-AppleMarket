@@ -1,10 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.detail.DetailPageFragment">
 
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_chat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:id="@+id/iv_thumbnail"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/thumbnail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/tv_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/profile_circle"
+                android:src="@drawable/avatar_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
+                tools:clipToOutline="true" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/gray_900"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_location"
+                app:layout_constraintStart_toEndOf="@id/tv_profile"
+                app:layout_constraintTop_toTopOf="@id/tv_profile"
+                tools:text="뭇쟁이" />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/tv_profile"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
+                app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+                tools:text="내배캠동" />
+
+            <TextView
+                android:id="@+id/tv_user_temper_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
+                tools:text="😊" />
+
+            <TextView
+                android:id="@+id/tv_temper_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/manners_temper"
+                android:textColor="@color/gray_600"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="@id/tv_user_temper_icon"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_temper_icon" />
+
+            <TextView
+                android:id="@+id/tv_user_temper_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/tv_user_temper_icon"
+                app:layout_constraintTop_toTopOf="@id/tv_user_temper_icon"
+                tools:text="65.5°C"
+                tools:textColor="#f7be68" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/tv_user_temper_num"
+                app:layout_constraintStart_toStartOf="@id/tv_user_temper_num"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_temper_num"
+                app:trackCornerRadius="4dp"
+                tools:indicatorColor="#f7be68"
+                tools:progress="65" />
 
 
-</FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/iv_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:src="@drawable/like_big"
+        app:layout_constraintBottom_toBottomOf="@id/btn_chat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_chat" />
+
+    <View
+        android:id="@+id/v_division"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:background="@color/gray_300"
+        app:layout_constraintBottom_toBottomOf="@id/btn_chat"
+        app:layout_constraintStart_toEndOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/btn_chat" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:autoSizeTextType="uniform"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_chat"
+        app:layout_constraintEnd_toStartOf="@+id/btn_chat"
+        app:layout_constraintStart_toEndOf="@id/v_division"
+        app:layout_constraintTop_toTopOf="@id/btn_chat"
+        tools:text="0,000,000,000원" />
+
+    <Button
+        android:id="@+id/btn_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="채팅하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

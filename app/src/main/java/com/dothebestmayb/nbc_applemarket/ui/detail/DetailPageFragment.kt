@@ -33,6 +33,7 @@ class DetailPageFragment : Fragment() {
         if (!extractDataFromIntent()) {
             return
         }
+        initView()
     }
 
     private fun extractDataFromIntent(): Boolean {
@@ -46,6 +47,10 @@ class DetailPageFragment : Fragment() {
         }
         receivedProduct = data
         return true
+    }
+
+    private fun initView() = with(binding) {
+        tvProfile.clipToOutline = true
     }
 
     override fun onDestroy() {

@@ -4,4 +4,6 @@
     <string name="decline">취소</string>
     <string name="accept">확인</string>
     <string name="needed_data_omiited">UI 표시에 필요한 데이터가 누락됐습니다.</string>
+    <string name="manners_temper"><u>매너온도</u></string>
+    <string name="temper_format">%d°C</string>
 </resources>
