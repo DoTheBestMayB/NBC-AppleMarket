@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dothebestmayb.nbc_applemarket.R
 import com.dothebestmayb.nbc_applemarket.data.ProductManager
 import com.dothebestmayb.nbc_applemarket.data.UserManager
@@ -76,6 +78,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
+        setListener()
     }
 
     private fun setRecyclerView() {
@@ -86,12 +89,30 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
                 R.drawable.line_divider
             )
         )
+        binding.rvProducts.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                if (layoutManager.findFirstVisibleItemPosition() == 0) {
+                    binding.fabUp.hide()
+                } else {
+                    binding.fabUp.show()
+                }
+            }
+        })
 
         if (isDummyDataInserted.not()) {
             val products =
                 ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
             adapter.submitList(products)
             isDummyDataInserted = true
+        }
+    }
+
+    private fun setListener() = with(binding) {
+        fabUp.setOnClickListener {
+            rvProducts.smoothScrollToPosition(0)
         }
     }
 
