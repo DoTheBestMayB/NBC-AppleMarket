@@ -46,8 +46,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     private val builder by lazy {
         NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.carrot)
-            .setContentTitle("Title")
-            .setContentText("Content")
+            .setContentTitle(getString(R.string.product_notification_alert_title))
+            .setContentText(getString(R.string.product_notification_alert_message))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(resources.getColor(R.color.primary, requireContext().theme))
     }
