@@ -16,4 +16,7 @@ object ProductManager {
     }
 
     fun getAllProducts() = products.values.toList()
+    fun removeProduct(product: Product) {
+        products.remove(product.uuid)
+    }
 }

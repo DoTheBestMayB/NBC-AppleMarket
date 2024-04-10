@@ -25,8 +25,11 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     private val binding: FragmentMainPageBinding
         get() = _binding!!
 
+    private var isDummyDataInserted = false
+    private lateinit var productWillBeDeleted: Product
+
     private val adapter by lazy { ProductAdapter(this) }
-    private val dialog by lazy {
+    private val finishDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("종료")
             .setMessage("정말 종료하시겠습니까?")
@@ -38,7 +41,26 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
                 requireActivity().finish()
             }
     }
-    private var isDummyDataInserted = false
+
+    private val deleteDialog by lazy {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("상품 삭제")
+            .setMessage("상품을 정말로 삭제하시겠습니까?")
+            .setIcon(R.drawable.conversation)
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                ProductManager.removeProduct(productWillBeDeleted)
+                updateProductList()
+            }
+    }
+
+    private fun updateProductList() {
+        val products =
+            ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
+        adapter.submitList(products)
+    }
 
     override fun onClick(product: Product) {
         parentFragmentManager.commit {
@@ -55,12 +77,17 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
         }
     }
 
+    override fun onLongClick(product: Product) {
+        productWillBeDeleted = product
+        deleteDialog.show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (isEnabled) {
-                dialog.show()
+                finishDialog.show()
             }
         }
         insertDummyData()
@@ -103,9 +130,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
         })
 
         if (isDummyDataInserted.not()) {
-            val products =
-                ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
-            adapter.submitList(products)
+            updateProductList()
             isDummyDataInserted = true
         }
     }

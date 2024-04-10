@@ -54,6 +54,10 @@ class ProductAdapter(
             binding.root.setOnClickListener {
                 onClickListener.onClick(product)
             }
+            binding.root.setOnLongClickListener {
+                onClickListener.onLongClick(product)
+                return@setOnLongClickListener true
+            }
         }
     }
 
