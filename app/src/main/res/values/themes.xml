@@ -3,10 +3,11 @@
     <style name="Base.Theme.NBCAppleMarket" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:background">@color/white</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/white</item>
-        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:imageButtonStyle">@style/customImageButtonFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
         <item name="snackbarStyle">@style/SnackbarStyle</item>
         <item name="snackbarTextViewStyle">@style/SnackbarTextViewStyle</item>
     </style>
@@ -20,12 +21,16 @@
         <item name="cornerSize">10%</item>
     </style>
 
-    <style name="SnackbarStyle" parent="Widget.Material3.Snackbar">
-        <item name="android:background">@color/snackbar_color</item>
+    <style name="SnackbarStyle" parent="ThemeOverlay.Material3.Snackbar">
+        <item name="android:paddingHorizontal">50dp</item>
+        <item name="backgroundTint">@color/primary_pressed</item>
+        <item name="backgroundColor">@color/primary_pressed</item>
+        <item name="android:backgroundTint">@color/primary_pressed</item>
+        <item name="android:background">@color/primary_pressed</item>
     </style>
 
     <style name="SnackbarTextViewStyle" parent="Widget.Material3.Snackbar.TextView">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:background">@color/snackbar_color</item>
     </style>
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dothebestmayb.nbc_applemarket.R
 import com.dothebestmayb.nbc_applemarket.data.LikeManager
@@ -114,8 +115,7 @@ class DetailPageFragment : Fragment() {
         val user = LoggedUserManager.loggedUser
         product = LikeManager.add(user, product)
         ProductManager.updateProduct(product)
-        Snackbar.make(binding.ivLike, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT)
-            .show()
+        Snackbar.make(binding.root, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setListener() = with(binding) {
