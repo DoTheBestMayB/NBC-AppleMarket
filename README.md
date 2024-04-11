@@ -1,3 +1,23 @@
+# 기능 소개
+
+### 메인 페이지 - 알림
+
+|알림 권한 허용|알림 권한 거부|알림 세부 채널 거부|
+|:-----:|:-----:|:-----:|
+|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/e03a948a-aead-4d8a-8783-7ca93e1d951d">|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/f5bc7728-118e-4aca-bb98-f5b2bd68b6db">|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/71bf47bb-0a35-4d6a-b6be-0c984d31d150">|
+
+### 메인 페이지 - 그 외
+
+|동네 설정|상품 삭제|
+|:-----:|:-----:|
+|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/80604908-d0aa-49e5-9cc4-24b787ea745f">|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/1abf5d81-3de0-42f5-965e-848b200e206b">|
+
+### 상품 상세 페이지
+
+|상품 좋아요|매너 온도 설명 창|채팅하기 미지원 알림|
+|:-----:|:-----:|:-----:|
+|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/3d966b02-0d18-4079-bcff-b04aa0fdf106">|<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/ec3aa00f-288b-4201-8e1e-c242e5aa22cd"> |<img width="200" src="https://github.com/DoTheBestMayB/NBC-AppleMarket/assets/48354989/94fc52d2-3187-4420-b1c9-9a95c4c05b41">|
+
 # 요구사항 분석
 
 ## 전체적인 부분
