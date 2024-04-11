@@ -131,6 +131,9 @@ class DetailPageFragment : Fragment() {
             }
             ivLike.setImageResource(drawableId)
         }
+        tvTemperInfo.setOnClickListener {
+            vGuidance.root.visibility = View.VISIBLE
+        }
     }
 
 
