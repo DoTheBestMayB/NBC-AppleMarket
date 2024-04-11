@@ -120,8 +120,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     }
 
     private fun updateProductList() {
-        val products =
-            ProductManager.getAllProducts().shuffled(Random(System.currentTimeMillis()))
+        val products = ProductManager.getAllProducts()
         adapter.submitList(products)
     }
 
@@ -191,11 +190,12 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
                 }
             }
         })
+        updateProductList()
 
-        if (isDummyDataInserted.not()) {
-            updateProductList()
-            isDummyDataInserted = true
-        }
+//        if (isDummyDataInserted.not()) {
+//            updateProductList()
+//            isDummyDataInserted = true
+//        }
     }
 
     private fun setListener() = with(binding) {

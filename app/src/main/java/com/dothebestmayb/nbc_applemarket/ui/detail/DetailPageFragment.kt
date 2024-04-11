@@ -128,7 +128,7 @@ class DetailPageFragment : Fragment() {
                 R.drawable.like_big
             } else {
                 addLike()
-                R.drawable.like_fill
+                R.drawable.like_fill_big
             }
             ivLike.setImageResource(drawableId)
         }
