@@ -116,7 +116,9 @@ class DetailPageFragment : Fragment() {
         val user = LoggedUserManager.getUserInfo()
         product = LikeManager.add(user, product)
         ProductManager.updateProduct(product)
-        Snackbar.make(binding.root, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.ivLike)
+            .show()
     }
 
     @SuppressLint("ClickableViewAccessibility")
