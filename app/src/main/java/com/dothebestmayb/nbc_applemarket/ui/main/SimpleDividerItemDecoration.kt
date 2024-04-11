@@ -9,7 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-class SimpleDividerItemDecoration(context: Context, @DrawableRes dividerRes: Int): ItemDecoration() {
+class SimpleDividerItemDecoration(context: Context, @DrawableRes dividerRes: Int) :
+    ItemDecoration() {
     private val mDivider: Drawable = ContextCompat.getDrawable(context, dividerRes)!!
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {

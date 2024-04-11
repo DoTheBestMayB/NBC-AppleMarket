@@ -98,7 +98,7 @@ class ProductAdapter(
         val product = getItem(position)
         for (payloadLists in payloads) {
             for (payload in payloadLists as List<*>) {
-                when(payload) {
+                when (payload) {
                     ProductChangePayload.LIKE -> holder.updateLike(product.like)
                     ProductChangePayload.LIKED_FILLED -> holder.updateLikeFilled(product)
                 }

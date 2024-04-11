@@ -15,7 +15,7 @@ data class Product(
     val like: Int,
     val numberOfChat: Int,
     val uuid: Int = count,
-): Parcelable {
+) : Parcelable {
 
     companion object {
 

@@ -32,7 +32,6 @@ import com.dothebestmayb.nbc_applemarket.ui.detail.DetailPageFragment
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_CHANNEL_ID
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_ID
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlin.random.Random
 
 class MainPageFragment : Fragment(), ProductOnClickListener {
 
@@ -219,12 +218,14 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
             return
         }
         // 게시물 알림을 개별적으로 차단했는지 확인
-        val notificationManager = requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         if (notificationManager.getNotificationChannel(PRODUCT_NOTIFICATION_CHANNEL_ID).importance == NotificationManager.IMPORTANCE_NONE) {
             notificationChannelPermissionDialog.show()
             return
         }
-        NotificationManagerCompat.from(requireContext()).notify(PRODUCT_NOTIFICATION_ID, builder.build())
+        NotificationManagerCompat.from(requireContext())
+            .notify(PRODUCT_NOTIFICATION_ID, builder.build())
 
     }
 
