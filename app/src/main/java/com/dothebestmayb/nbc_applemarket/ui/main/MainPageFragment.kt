@@ -36,7 +36,6 @@ import com.dothebestmayb.nbc_applemarket.model.User
 import com.dothebestmayb.nbc_applemarket.ui.detail.DetailPageFragment
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_CHANNEL_ID
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_ID
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickListener {
 
@@ -98,7 +97,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     private val locationAdapter by lazy { LocationAdapter(this) }
 
     private val finishDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.finish_dialog_title))
             .setMessage(getString(R.string.finish_dialog_message))
             .setIcon(R.drawable.conversation)
@@ -111,7 +110,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     }
 
     private val deleteDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.delete_dialog_title))
             .setMessage(getString(R.string.delete_dialog_message))
             .setIcon(R.drawable.conversation)
