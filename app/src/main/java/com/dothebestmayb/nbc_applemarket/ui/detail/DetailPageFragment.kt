@@ -80,6 +80,7 @@ class DetailPageFragment : Fragment() {
         tvUserTemperNum.text = getString(R.string.temper_format).format(seller.temper)
         val userTemperature = UserTemperature.get(seller.temper)
         tvUserTemperIcon.text = userTemperature.emoji
+        progressTemper.clearAnimation()
         progressTemper.progress = seller.temper.toInt()
         val color = Color.parseColor(userTemperature.colorCode)
         tvUserTemperNum.setTextColor(color)
