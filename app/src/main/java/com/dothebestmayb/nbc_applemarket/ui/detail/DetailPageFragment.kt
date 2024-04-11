@@ -1,9 +1,11 @@
 package com.dothebestmayb.nbc_applemarket.ui.detail
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -117,6 +119,7 @@ class DetailPageFragment : Fragment() {
         Snackbar.make(binding.root, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListener() = with(binding) {
         ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -133,6 +136,22 @@ class DetailPageFragment : Fragment() {
         }
         tvTemperInfo.setOnClickListener {
             vGuidance.root.visibility = View.VISIBLE
+        }
+        root.setOnClickListener {
+            vGuidance.root.visibility = View.GONE
+        }
+
+        // 스크롤뷰를 클릭하면 매너 온도 안내 팝업이 사라지도록 구현
+        sv.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                vGuidance.root.visibility = View.GONE
+            }
+            false // 클릭되었을 때, 매너 온도 안내 팝업을 사라지도록 하는 것이 목표 이므로, 터치 이벤트가 child로 타고 가도록 false 처리
+        }
+
+        // 스크롤뷰에 등록한 터치 리스너로 인해, 매너 온도 안내 팝업을 클릭하면 사라지고 있는데, 이것을 방지하기 위한 코드
+        vGuidance.root.setOnClickListener {
+            it.visibility = View.VISIBLE
         }
     }
 

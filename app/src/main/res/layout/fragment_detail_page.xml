@@ -7,8 +7,12 @@
     tools:context=".ui.detail.DetailPageFragment">
 
     <ScrollView
+        android:id="@+id/sv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toTopOf="@id/v_division_of_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,8 +152,10 @@
                 layout="@layout/bubble_guidance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/tv_temper_info"
                 app:layout_constraintTop_toBottomOf="@id/tv_temper_info"
-                app:layout_constraintEnd_toEndOf="@id/tv_temper_info" />
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
