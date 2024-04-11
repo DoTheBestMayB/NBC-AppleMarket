@@ -155,6 +155,10 @@ class DetailPageFragment : Fragment() {
         vGuidance.root.setOnClickListener {
             it.visibility = View.VISIBLE
         }
+
+        btnChat.setOnClickListener {
+            Toast.makeText(requireContext(), R.string.chat_is_not_supported, Toast.LENGTH_SHORT).show()
+        }
     }
 
 
