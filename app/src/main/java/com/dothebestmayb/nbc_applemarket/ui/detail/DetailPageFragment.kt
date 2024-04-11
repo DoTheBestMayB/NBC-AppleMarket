@@ -94,7 +94,7 @@ class DetailPageFragment : Fragment() {
         tvPrice.text = product.price.toStringWithComma()
 
         val drawableId = if (checkLike()) {
-            R.drawable.like_fill
+            R.drawable.like_fill_big
         } else {
             R.drawable.like_big
         }

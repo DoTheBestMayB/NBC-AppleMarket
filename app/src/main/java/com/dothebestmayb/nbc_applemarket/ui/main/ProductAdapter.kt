@@ -65,7 +65,7 @@ class ProductAdapter(
             ivChat.visibility = likeVisibility
         }
 
-        private fun setListener(product: Product) {
+        fun setListener(product: Product) {
             binding.root.setOnClickListener {
                 onClickListener.onClick(product)
             }
@@ -101,6 +101,7 @@ class ProductAdapter(
                 when (payload) {
                     ProductChangePayload.LIKE -> holder.updateLike(product.like)
                     ProductChangePayload.LIKED_FILLED -> holder.updateLikeFilled(product)
+                    ProductChangePayload.LISTENER -> holder.setListener(product)
                 }
             }
         }
@@ -122,8 +123,9 @@ class ProductAdapter(
 
                 if (oldItem.like != newItem.like) {
                     changes.add(ProductChangePayload.LIKE)
+                    changes.add(ProductChangePayload.LIKED_FILLED)
+                    changes.add(ProductChangePayload.LISTENER)
                 }
-                changes.add(ProductChangePayload.LIKED_FILLED)
 
                 return changes
             }

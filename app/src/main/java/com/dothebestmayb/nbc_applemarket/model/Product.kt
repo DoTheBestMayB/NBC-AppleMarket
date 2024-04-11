@@ -17,6 +17,23 @@ data class Product(
     val uuid: Int = count,
 ) : Parcelable {
 
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+//        var result = name.hashCode()
+//        result = 31 * result + imageUri.hashCode()
+//        result = 31 * result + introduction.hashCode()
+//        result = 31 * result + sellerNickname.hashCode()
+//        result = 31 * result + price
+//        result = 31 * result + location.hashCode()
+//        result = 31 * result + like
+//        result = 31 * result + numberOfChat
+//        result = 31 * result + uuid
+        return uuid
+    }
+
     companion object {
 
         @Volatile
