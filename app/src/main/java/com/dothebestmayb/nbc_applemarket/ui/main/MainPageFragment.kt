@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -55,7 +56,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     }
 
     private val notificationPermissionDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.notification_permission_title))
             .setMessage(getString(R.string.notification_permission_message))
             .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
@@ -69,7 +70,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     }
 
     private val notificationChannelPermissionDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.product_channel_permission_title))
             .setMessage(getString(R.string.product_channel_permission_message))
             .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
