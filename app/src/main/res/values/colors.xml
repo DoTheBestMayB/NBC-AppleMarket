@@ -9,4 +9,5 @@
     <color name="primary_pressed">#0000FF</color>
     <color name="snackbar_color">#FF323232</color>
     <color name="transparent_black">#50000000</color>
+    <color name="guidance_color">#202123</color>
 </resources>

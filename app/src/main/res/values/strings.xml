@@ -25,4 +25,5 @@
     <string name="delete_dialog_message">상품을 정말로 삭제하시겠습니까?</string>
     <string name="chat">채팅하기</string>
     <string name="liking_product_is_done">관심 목록에 추가되었습니다.</string>
+    <string name="temper_guidance">매너온도는 당근 사용로부터 받은 칭찬, 후기, 비매너평가, 운영자 재재 등을 종합해서 만든 매너 지표입니다.</string>
 </resources>
