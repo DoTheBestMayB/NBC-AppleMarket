@@ -37,7 +37,7 @@ class ProductAdapter(
         }
 
         fun updateLikeFilled(product: Product) {
-            val id = if (LikeManager.checkLike(LoggedUserManager.loggedUser, product)) {
+            val id = if (LikeManager.checkLike(LoggedUserManager.getUserInfo(), product)) {
                 R.drawable.like_fill
             } else {
                 R.drawable.like

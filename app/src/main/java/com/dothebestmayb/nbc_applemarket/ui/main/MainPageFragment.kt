@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -23,9 +24,12 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dothebestmayb.nbc_applemarket.R
+import com.dothebestmayb.nbc_applemarket.data.LoggedUserManager
 import com.dothebestmayb.nbc_applemarket.data.ProductManager
 import com.dothebestmayb.nbc_applemarket.data.UserManager
 import com.dothebestmayb.nbc_applemarket.databinding.FragmentMainPageBinding
+import com.dothebestmayb.nbc_applemarket.model.Location
+import com.dothebestmayb.nbc_applemarket.model.LocationItem
 import com.dothebestmayb.nbc_applemarket.model.Product
 import com.dothebestmayb.nbc_applemarket.model.User
 import com.dothebestmayb.nbc_applemarket.ui.detail.DetailPageFragment
@@ -33,13 +37,12 @@ import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_CHANNEL_ID
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_ID
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class MainPageFragment : Fragment(), ProductOnClickListener {
+class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickListener {
 
     private var _binding: FragmentMainPageBinding? = null
     private val binding: FragmentMainPageBinding
         get() = _binding!!
 
-    private var isDummyDataInserted = false
     private lateinit var productWillBeDeleted: Product
 
     private val builder by lazy {
@@ -90,7 +93,9 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
             }
         }
 
-    private val adapter by lazy { ProductAdapter(this) }
+    private val productAdapter by lazy { ProductAdapter(this) }
+    private val locationAdapter by lazy { LocationAdapter(this) }
+
     private val finishDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.finish_dialog_title))
@@ -120,7 +125,19 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
 
     private fun updateProductList() {
         val products = ProductManager.getAllProducts()
-        adapter.submitList(products)
+        productAdapter.submitList(products)
+    }
+
+    private fun updateLocationList() {
+        val currentLocation = LoggedUserManager.getUserLocation()
+        val locations = LoggedUserManager.locations.toList().map {
+            if (it == currentLocation) {
+                LocationItem(it.name, true)
+            } else {
+                LocationItem(it.name, false)
+            }
+        }
+        locationAdapter.submitList(locations)
     }
 
     override fun onClick(product: Product) {
@@ -136,6 +153,17 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
             setReorderingAllowed(true)
             addToBackStack(null)
         }
+    }
+
+    override fun onClick(location: LocationItem) {
+        val user = LoggedUserManager.getUserInfo().copy(location = Location(location.name))
+        UserManager.updateUser(user)
+        LoggedUserManager.updateUserInfo(user)
+        binding.btnLocation.text = location.name
+
+        hideLocationSelector()
+        updateLocationList()
+        flipLocationArrow()
     }
 
     override fun onLongClick(product: Product) {
@@ -170,7 +198,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
     }
 
     private fun setRecyclerView() {
-        binding.rvProducts.adapter = adapter
+        binding.rvLocation.adapter = locationAdapter
+        binding.rvProducts.adapter = productAdapter
         binding.rvProducts.addItemDecoration(
             SimpleDividerItemDecoration(
                 requireContext(),
@@ -190,11 +219,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
             }
         })
         updateProductList()
-
-//        if (isDummyDataInserted.not()) {
-//            updateProductList()
-//            isDummyDataInserted = true
-//        }
+        updateLocationList()
     }
 
     private fun setListener() = with(binding) {
@@ -204,6 +229,27 @@ class MainPageFragment : Fragment(), ProductOnClickListener {
         ivAlert.setOnClickListener {
             createNotification()
         }
+        listOf(btnLocation, ivArrow).forEach {
+            it.setOnClickListener {
+                rvLocation.visibility = View.VISIBLE
+                vHighlight.visibility = View.VISIBLE
+                flipLocationArrow()
+            }
+            vHighlight.setOnClickListener {
+                hideLocationSelector()
+                flipLocationArrow()
+            }
+        }
+    }
+
+    private fun flipLocationArrow() = with(binding) {
+        val deg = if (ivArrow.rotation == 180f) 0f else 180f
+        ivArrow.animate().rotation(deg).setInterpolator(AccelerateInterpolator())
+    }
+
+    private fun hideLocationSelector() {
+        binding.vHighlight.visibility = View.GONE
+        binding.rvLocation.visibility = View.GONE
     }
 
     private fun createNotification() {

@@ -15,6 +15,10 @@ object UserManager {
         users[newUser.nickname] = newUser
     }
 
+    fun updateUser(user: User) {
+        users[user.nickname] = user
+    }
+
     fun getUser(nickName: String): User? {
         return users[nickName]
     }

@@ -13,16 +13,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/location_nbc"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:icon="@drawable/below_arrow"
-        app:iconGravity="end"
-        app:iconTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@drawable/below_arrow"
+        app:iconGravity="end"
+        app:layout_constraintStart_toEndOf="@id/btn_location"
+        app:layout_constraintTop_toTopOf="@id/btn_location"
+        app:layout_constraintBottom_toBottomOf="@id/btn_location"
+        app:iconTint="@color/black" />
 
     <ImageView
         android:id="@+id/iv_alert"
@@ -52,11 +59,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        app:backgroundTint="@color/fab_selector"
         android:contentDescription="@string/content_description_fab_up"
+        app:backgroundTint="@color/fab_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/baseline_arrow_upward_24"
         app:tint="@color/white" />
+
+    <View
+        android:id="@+id/v_highlight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/transparent_black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="@id/btn_location"
+        app:layout_constraintTop_toBottomOf="@id/btn_location"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

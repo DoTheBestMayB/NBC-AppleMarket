@@ -84,7 +84,7 @@ class DetailPageFragment : Fragment() {
         progressTemper.setIndicatorColor(color)
 
         tvSellerName.text = seller.nickname
-        tvLocation.text = seller.location
+        tvLocation.text = seller.location.name
 
         tvName.text = product.name
         tvIntroduction.text = product.introduction
@@ -100,18 +100,18 @@ class DetailPageFragment : Fragment() {
     }
 
     private fun checkLike(): Boolean {
-        val user = LoggedUserManager.loggedUser
+        val user = LoggedUserManager.getUserInfo()
         return LikeManager.checkLike(user, product)
     }
 
     private fun removeLike() {
-        val user = LoggedUserManager.loggedUser
+        val user = LoggedUserManager.getUserInfo()
         product = LikeManager.remove(user, product)
         ProductManager.updateProduct(product)
     }
 
     private fun addLike() {
-        val user = LoggedUserManager.loggedUser
+        val user = LoggedUserManager.getUserInfo()
         product = LikeManager.add(user, product)
         ProductManager.updateProduct(product)
         Snackbar.make(binding.root, R.string.liking_product_is_done, Snackbar.LENGTH_SHORT).show()
