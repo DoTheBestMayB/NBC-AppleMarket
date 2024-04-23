@@ -2,7 +2,6 @@ package com.dothebestmayb.nbc_applemarket.ui.main
 
 import android.Manifest
 import android.app.NotificationManager
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -46,7 +45,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
 
     private lateinit var productWillBeDeleted: Product
 
-    private lateinit var builder: NotificationCompat.Builder
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
     private lateinit var notificationPermissionDialog: AlertDialog.Builder
     private lateinit var notificationChannelPermissionDialog: AlertDialog.Builder
@@ -178,12 +177,13 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     }
 
     private fun setNotification() {
-        builder = NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.carrot)
-            .setContentTitle(getString(R.string.product_notification_alert_title))
-            .setContentText(getString(R.string.product_notification_alert_message))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setColor(resources.getColor(R.color.primary, requireContext().theme))
+        notificationBuilder =
+            NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.carrot)
+                .setContentTitle(getString(R.string.product_notification_alert_title))
+                .setContentText(getString(R.string.product_notification_alert_message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setColor(resources.getColor(R.color.primary, requireContext().theme))
     }
 
     override fun onCreateView(
@@ -275,7 +275,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             return
         }
         NotificationManagerCompat.from(requireContext())
-            .notify(PRODUCT_NOTIFICATION_ID, builder.build())
+            .notify(PRODUCT_NOTIFICATION_ID, notificationBuilder.build())
 
     }
 
