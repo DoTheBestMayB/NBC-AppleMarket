@@ -18,13 +18,32 @@ class ProductAdapter(
     private val onClickListener: ProductOnClickListener,
 ) : ListAdapter<Product, ProductAdapter.ViewHolder>(diffCallback) {
 
-    inner class ViewHolder(private val binding: ItemProductOverviewBinding) :
+    class ViewHolder(
+        private val binding: ItemProductOverviewBinding,
+        private val onClickListener: ProductOnClickListener,
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private var product: Product? = null
+
+        init {
+            binding.root.setOnClickListener {
+                product?.let {
+                    onClickListener.onClick(it)
+                }
+            }
+            binding.root.setOnLongClickListener {
+                product?.let {
+                    onClickListener.onLongClick(it)
+                }
+                return@setOnLongClickListener true
+            }
+        }
+
         fun bind(product: Product) = with(binding) {
+            this@ViewHolder.product = product
             setData(product)
             setVisibility(product)
-            setListener(product)
         }
 
         private fun setData(product: Product) = with(binding) {
@@ -65,16 +84,6 @@ class ProductAdapter(
             ivChat.visibility = likeVisibility
         }
 
-        fun setListener(product: Product) {
-            binding.root.setOnClickListener {
-                onClickListener.onClick(product)
-            }
-            binding.root.setOnLongClickListener {
-                onClickListener.onLongClick(product)
-                return@setOnLongClickListener true
-            }
-        }
-
         fun updateLike(count: Int) {
             binding.tvLike.text = count.toString()
         }
@@ -82,7 +91,8 @@ class ProductAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemProductOverviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemProductOverviewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickListener,
         )
     }
 
@@ -101,7 +111,6 @@ class ProductAdapter(
                 when (payload) {
                     ProductChangePayload.LIKE -> holder.updateLike(product.like)
                     ProductChangePayload.LIKED_FILLED -> holder.updateLikeFilled(product)
-                    ProductChangePayload.LISTENER -> holder.setListener(product)
                 }
             }
         }
@@ -124,7 +133,6 @@ class ProductAdapter(
                 if (oldItem.like != newItem.like) {
                     changes.add(ProductChangePayload.LIKE)
                     changes.add(ProductChangePayload.LIKED_FILLED)
-                    changes.add(ProductChangePayload.LISTENER)
                 }
 
                 return changes
