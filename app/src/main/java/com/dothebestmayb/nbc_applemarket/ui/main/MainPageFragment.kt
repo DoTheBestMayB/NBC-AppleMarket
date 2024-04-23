@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -126,7 +125,6 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
         insertDummyData()
         createAlertDialog()
         setNotification()
-        Log.i(TAG, "onCreate is called")
     }
 
     private fun createAlertDialog() {
@@ -192,8 +190,6 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.i(TAG, "onCreateView is called")
-
         _binding = FragmentMainPageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -201,7 +197,6 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i(TAG, "onViewCreated is called")
         setRecyclerView()
         setListener()
     }
@@ -288,49 +283,4 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
         ProductManager.addProduct(Product.getDummyData())
         UserManager.addUser(User.getDummyData())
     }
-
-    override fun onPause() {
-        super.onPause()
-
-        Log.i(TAG, "onPause is called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        Log.i(TAG, "onStop called")
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        Log.i(TAG, "onResume called")
-    }
-
-    override fun onDestroy() {
-        _binding = null
-
-        super.onDestroy()
-        Log.i(TAG, "onDestroy called")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i(TAG, "onDestroyView is called")
-    }
-
-    val TAG = MainPageFragment::class.java.simpleName
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        Log.i(TAG, "onAttach called")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-
-        Log.i(TAG, "onDetach called")
-    }
-
 }
