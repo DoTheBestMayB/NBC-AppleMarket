@@ -47,43 +47,12 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
 
     private lateinit var productWillBeDeleted: Product
 
-    private val builder by lazy {
-        NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.carrot)
-            .setContentTitle(getString(R.string.product_notification_alert_title))
-            .setContentText(getString(R.string.product_notification_alert_message))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setColor(resources.getColor(R.color.primary, requireContext().theme))
-    }
+    private lateinit var builder: NotificationCompat.Builder
 
-    private val notificationPermissionDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.notification_permission_title))
-            .setMessage(getString(R.string.notification_permission_message))
-            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
-            }
-            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.parse("package:" + requireContext().packageName)
-                }
-                startActivity(intent)
-            }
-    }
-
-    private val notificationChannelPermissionDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.product_channel_permission_title))
-            .setMessage(getString(R.string.product_channel_permission_message))
-            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
-            }
-            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
-                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                    putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
-                    putExtra(Settings.EXTRA_CHANNEL_ID, PRODUCT_NOTIFICATION_CHANNEL_ID)
-                }
-                startActivity(intent)
-            }
-    }
+    private lateinit var notificationPermissionDialog: AlertDialog.Builder
+    private lateinit var notificationChannelPermissionDialog: AlertDialog.Builder
+    private lateinit var finishDialog: AlertDialog.Builder
+    private lateinit var deleteDialog: AlertDialog.Builder
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -95,35 +64,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             }
         }
 
-    private val productAdapter by lazy { ProductAdapter(this) }
-    private val locationAdapter by lazy { LocationAdapter(this) }
-
-    private val finishDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.finish_dialog_title))
-            .setMessage(getString(R.string.finish_dialog_message))
-            .setIcon(R.drawable.conversation)
-            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
-
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                requireActivity().finish()
-            }
-    }
-
-    private val deleteDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.delete_dialog_title))
-            .setMessage(getString(R.string.delete_dialog_message))
-            .setIcon(R.drawable.conversation)
-            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
-
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                ProductManager.removeProduct(productWillBeDeleted)
-                updateProductList()
-            }
-    }
+    private val productAdapter = ProductAdapter(this)
+    private val locationAdapter = LocationAdapter(this)
 
     private fun updateProductList() {
         val products = ProductManager.getAllProducts()
@@ -182,7 +124,68 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             }
         }
         insertDummyData()
+        createAlertDialog()
+        setNotification()
         Log.i(TAG, "onCreate is called")
+    }
+
+    private fun createAlertDialog() {
+        notificationPermissionDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.notification_permission_title))
+            .setMessage(getString(R.string.notification_permission_message))
+            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
+            }
+            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:" + requireContext().packageName)
+                }
+                startActivity(intent)
+            }
+        notificationChannelPermissionDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.product_channel_permission_title))
+            .setMessage(getString(R.string.product_channel_permission_message))
+            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
+            }
+            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
+                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                    putExtra(Settings.EXTRA_CHANNEL_ID, PRODUCT_NOTIFICATION_CHANNEL_ID)
+                }
+                startActivity(intent)
+            }
+
+
+        finishDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.finish_dialog_title))
+            .setMessage(getString(R.string.finish_dialog_message))
+            .setIcon(R.drawable.conversation)
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                requireActivity().finish()
+            }
+
+        deleteDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_dialog_title))
+            .setMessage(getString(R.string.delete_dialog_message))
+            .setIcon(R.drawable.conversation)
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                ProductManager.removeProduct(productWillBeDeleted)
+                updateProductList()
+            }
+    }
+
+    private fun setNotification() {
+        builder = NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.carrot)
+            .setContentTitle(getString(R.string.product_notification_alert_title))
+            .setContentText(getString(R.string.product_notification_alert_message))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setColor(resources.getColor(R.color.primary, requireContext().theme))
     }
 
     override fun onCreateView(
@@ -291,6 +294,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
 
         Log.i(TAG, "onPause is called")
     }
+
     override fun onStop() {
         super.onStop()
 
