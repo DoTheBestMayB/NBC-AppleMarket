@@ -38,7 +38,9 @@ data class Product(
 
         @Volatile
         private var count = 0
-            get() = field++
+            get() = synchronized(Product::class) {
+                field++
+            }
 
         private val dummyData = listOf(
             Product(
