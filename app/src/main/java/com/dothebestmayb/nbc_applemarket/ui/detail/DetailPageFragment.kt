@@ -153,8 +153,8 @@ class DetailPageFragment : Fragment() {
         }
 
         // 스크롤뷰에 등록한 터치 리스너로 인해, 매너 온도 안내 팝업을 클릭하면 사라지고 있는데, 이것을 방지하기 위한 코드
-        vGuidance.root.setOnClickListener {
-            it.visibility = View.VISIBLE
+        vGuidance.root.setOnTouchListener { v, event ->
+            true
         }
 
         btnChat.setOnClickListener {
