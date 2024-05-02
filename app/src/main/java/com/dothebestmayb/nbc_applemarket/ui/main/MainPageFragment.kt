@@ -93,7 +93,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             }
             replace(R.id.fragment_container_view, fragment)
             setReorderingAllowed(true)
-            addToBackStack(null)
+//            addToBackStack(null)
         }
     }
 
