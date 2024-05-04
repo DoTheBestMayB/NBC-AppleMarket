@@ -23,6 +23,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dothebestmayb.nbc_applemarket.R
@@ -43,6 +45,10 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     private var _binding: FragmentMainPageBinding? = null
     private val binding: FragmentMainPageBinding
         get() = _binding!!
+
+    private val visibleLifecycleOwner: SimpleLifecycleOwner by lazy {
+        SimpleLifecycleOwner()
+    }
 
     private lateinit var productWillBeDeleted: Product
 
@@ -210,8 +216,28 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLifecycle()
         setRecyclerView()
         setListener()
+    }
+
+    private fun setLifecycle() {
+        viewLifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                when (event) {
+                    Lifecycle.Event.ON_RESUME, Lifecycle.Event.ON_PAUSE -> {
+                        if (isHidden) {
+                            visibleLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+                        } else {
+                            visibleLifecycleOwner.handleLifecycleEvent(event)
+                        }
+                    }
+
+                    else -> visibleLifecycleOwner.handleLifecycleEvent(event)
+                }
+            }
+
+        })
     }
 
     private fun setRecyclerView() {
