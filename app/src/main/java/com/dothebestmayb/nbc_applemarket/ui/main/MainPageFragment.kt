@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -104,7 +103,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
                 arguments = bundle
             }
 
-            add(R.id.fragment_container_view, fragment)
+            add(R.id.fragment_container_view, fragment, DetailPageFragment.DETAIL_PAGE_FRAGMENT_TAG)
             setReorderingAllowed(true)
             addToBackStack(null)
             setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
