@@ -106,7 +106,6 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             add(R.id.fragment_container_view, fragment, DetailPageFragment.DETAIL_PAGE_FRAGMENT_TAG)
             setReorderingAllowed(true)
             addToBackStack(null)
-            setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
         }
     }
 
