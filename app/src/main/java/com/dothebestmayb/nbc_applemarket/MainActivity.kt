@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.add
 import com.dothebestmayb.nbc_applemarket.databinding.ActivityMainBinding
+import com.dothebestmayb.nbc_applemarket.ui.main.MainPageFragment
 import com.dothebestmayb.nbc_applemarket.util.PRODUCT_NOTIFICATION_CHANNEL_ID
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +28,16 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        setFragment(savedInstanceState)
         createNotificationChannel()
+    }
+
+    private fun setFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add<MainPageFragment>(R.id.fragment_container_view, MainPageFragment.MAIN_PAGE_FRAGMENT_TAG)
+                .commit()
+        }
     }
 
     private fun createNotificationChannel() {

@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dothebestmayb.nbc_applemarket.R
@@ -84,6 +85,10 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
 
     override fun onClick(product: Product) {
         parentFragmentManager.commit {
+            if (this@MainPageFragment.isVisible) {
+                hide(this@MainPageFragment)
+                setMaxLifecycle(this@MainPageFragment, Lifecycle.State.STARTED)
+            }
 
             val bundle = Bundle().apply {
                 putParcelable(DetailPageFragment.BUNDLE_KEY_FOR_PRODUCT, product)
@@ -91,10 +96,18 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             val fragment = DetailPageFragment().apply {
                 arguments = bundle
             }
-            replace(R.id.fragment_container_view, fragment)
+
+            add(R.id.fragment_container_view, fragment)
             setReorderingAllowed(true)
             addToBackStack(null)
+            setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updateProductList()
     }
 
     override fun onClick(location: LocationItem) {
@@ -282,5 +295,15 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     private fun insertDummyData() {
         ProductManager.addProduct(Product.getDummyData())
         UserManager.addUser(User.getDummyData())
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+
+        super.onDestroyView()
+    }
+
+    companion object {
+        const val MAIN_PAGE_FRAGMENT_TAG = "mainPageFragment"
     }
 }

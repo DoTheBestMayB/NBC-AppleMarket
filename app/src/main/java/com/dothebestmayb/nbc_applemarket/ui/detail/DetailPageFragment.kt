@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
 import com.dothebestmayb.nbc_applemarket.R
 import com.dothebestmayb.nbc_applemarket.data.LikeManager
 import com.dothebestmayb.nbc_applemarket.data.LoggedUserManager
@@ -19,6 +21,7 @@ import com.dothebestmayb.nbc_applemarket.databinding.FragmentDetailPageBinding
 import com.dothebestmayb.nbc_applemarket.model.Product
 import com.dothebestmayb.nbc_applemarket.model.User
 import com.dothebestmayb.nbc_applemarket.model.UserTemperature
+import com.dothebestmayb.nbc_applemarket.ui.main.MainPageFragment
 import com.dothebestmayb.nbc_applemarket.util.toStringWithComma
 import com.google.android.material.snackbar.Snackbar
 
@@ -125,6 +128,14 @@ class DetailPageFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setListener() = with(binding) {
         ibBack.setOnClickListener {
+            val mainPageFragment =
+                parentFragmentManager.findFragmentByTag(MainPageFragment.MAIN_PAGE_FRAGMENT_TAG)
+            if (mainPageFragment != null) {
+                parentFragmentManager.commit {
+                    show(mainPageFragment)
+                    setMaxLifecycle(mainPageFragment, Lifecycle.State.RESUMED)
+                }
+            }
             parentFragmentManager.popBackStack()
         }
         ivLike.setOnClickListener {
@@ -158,7 +169,8 @@ class DetailPageFragment : Fragment() {
         }
 
         btnChat.setOnClickListener {
-            Toast.makeText(requireContext(), R.string.chat_is_not_supported, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.chat_is_not_supported, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
