@@ -3,7 +3,6 @@ package com.dothebestmayb.nbc_applemarket
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -48,18 +47,5 @@ class MainActivity : AppCompatActivity() {
         channel.description = descriptionText
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
-    }
-
-    val TAG = MainActivity::class.java.simpleName
-    override fun onPause() {
-        super.onPause()
-
-        Log.i(TAG, "onPause is called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        Log.i(TAG, "onStop is called")
     }
 }
