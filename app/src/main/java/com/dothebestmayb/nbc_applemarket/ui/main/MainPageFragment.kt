@@ -22,6 +22,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dothebestmayb.nbc_applemarket.R
@@ -43,45 +46,18 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     private val binding: FragmentMainPageBinding
         get() = _binding!!
 
+    private val visibleLifecycleOwner: SimpleLifecycleOwner by lazy {
+        SimpleLifecycleOwner()
+    }
+
     private lateinit var productWillBeDeleted: Product
 
-    private val builder by lazy {
-        NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.carrot)
-            .setContentTitle(getString(R.string.product_notification_alert_title))
-            .setContentText(getString(R.string.product_notification_alert_message))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setColor(resources.getColor(R.color.primary, requireContext().theme))
-    }
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
-    private val notificationPermissionDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.notification_permission_title))
-            .setMessage(getString(R.string.notification_permission_message))
-            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
-            }
-            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.parse("package:" + requireContext().packageName)
-                }
-                startActivity(intent)
-            }
-    }
-
-    private val notificationChannelPermissionDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.product_channel_permission_title))
-            .setMessage(getString(R.string.product_channel_permission_message))
-            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
-            }
-            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
-                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-                    putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
-                    putExtra(Settings.EXTRA_CHANNEL_ID, PRODUCT_NOTIFICATION_CHANNEL_ID)
-                }
-                startActivity(intent)
-            }
-    }
+    private lateinit var notificationPermissionDialog: AlertDialog.Builder
+    private lateinit var notificationChannelPermissionDialog: AlertDialog.Builder
+    private lateinit var finishDialog: AlertDialog.Builder
+    private lateinit var deleteDialog: AlertDialog.Builder
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -93,35 +69,8 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             }
         }
 
-    private val productAdapter by lazy { ProductAdapter(this) }
-    private val locationAdapter by lazy { LocationAdapter(this) }
-
-    private val finishDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.finish_dialog_title))
-            .setMessage(getString(R.string.finish_dialog_message))
-            .setIcon(R.drawable.conversation)
-            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
-
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                requireActivity().finish()
-            }
-    }
-
-    private val deleteDialog by lazy {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.delete_dialog_title))
-            .setMessage(getString(R.string.delete_dialog_message))
-            .setIcon(R.drawable.conversation)
-            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
-
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
-                ProductManager.removeProduct(productWillBeDeleted)
-                updateProductList()
-            }
-    }
+    private val productAdapter = ProductAdapter(this)
+    private val locationAdapter = LocationAdapter(this)
 
     private fun updateProductList() {
         val products = ProductManager.getAllProducts()
@@ -142,6 +91,10 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
 
     override fun onClick(product: Product) {
         parentFragmentManager.commit {
+            if (this@MainPageFragment.isVisible) {
+                hide(this@MainPageFragment)
+                setMaxLifecycle(this@MainPageFragment, Lifecycle.State.STARTED)
+            }
 
             val bundle = Bundle().apply {
                 putParcelable(DetailPageFragment.BUNDLE_KEY_FOR_PRODUCT, product)
@@ -149,10 +102,17 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             val fragment = DetailPageFragment().apply {
                 arguments = bundle
             }
-            replace(R.id.fragment_container_view, fragment)
+
+            add(R.id.fragment_container_view, fragment, DetailPageFragment.DETAIL_PAGE_FRAGMENT_TAG)
             setReorderingAllowed(true)
             addToBackStack(null)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updateProductList()
     }
 
     override fun onClick(location: LocationItem) {
@@ -174,12 +134,74 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(visibleLifecycleOwner) {
             if (isEnabled) {
                 finishDialog.show()
             }
         }
         insertDummyData()
+        createAlertDialog()
+        setNotification()
+    }
+
+    private fun createAlertDialog() {
+        notificationPermissionDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.notification_permission_title))
+            .setMessage(getString(R.string.notification_permission_message))
+            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
+            }
+            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:" + requireContext().packageName)
+                }
+                startActivity(intent)
+            }
+        notificationChannelPermissionDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.product_channel_permission_title))
+            .setMessage(getString(R.string.product_channel_permission_message))
+            .setNegativeButton(getString(R.string.permission_negative)) { _: DialogInterface, _: Int ->
+            }
+            .setPositiveButton(getString(R.string.permission_positive)) { _, _ ->
+                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                    putExtra(Settings.EXTRA_CHANNEL_ID, PRODUCT_NOTIFICATION_CHANNEL_ID)
+                }
+                startActivity(intent)
+            }
+
+
+        finishDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.finish_dialog_title))
+            .setMessage(getString(R.string.finish_dialog_message))
+            .setIcon(R.drawable.conversation)
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                requireActivity().finish()
+            }
+
+        deleteDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_dialog_title))
+            .setMessage(getString(R.string.delete_dialog_message))
+            .setIcon(R.drawable.conversation)
+            .setNegativeButton(resources.getString(R.string.decline)) { _, _ ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { _, _ ->
+                ProductManager.removeProduct(productWillBeDeleted)
+                updateProductList()
+            }
+    }
+
+    private fun setNotification() {
+        notificationBuilder =
+            NotificationCompat.Builder(requireContext(), PRODUCT_NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.carrot)
+                .setContentTitle(getString(R.string.product_notification_alert_title))
+                .setContentText(getString(R.string.product_notification_alert_message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setColor(resources.getColor(R.color.primary, requireContext().theme))
     }
 
     override fun onCreateView(
@@ -193,8 +215,28 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLifecycle()
         setRecyclerView()
         setListener()
+    }
+
+    private fun setLifecycle() {
+        viewLifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                when (event) {
+                    Lifecycle.Event.ON_RESUME, Lifecycle.Event.ON_PAUSE -> {
+                        if (isHidden) {
+                            visibleLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+                        } else {
+                            visibleLifecycleOwner.handleLifecycleEvent(event)
+                        }
+                    }
+
+                    else -> visibleLifecycleOwner.handleLifecycleEvent(event)
+                }
+            }
+
+        })
     }
 
     private fun setRecyclerView() {
@@ -271,7 +313,7 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
             return
         }
         NotificationManagerCompat.from(requireContext())
-            .notify(PRODUCT_NOTIFICATION_ID, builder.build())
+            .notify(PRODUCT_NOTIFICATION_ID, notificationBuilder.build())
 
     }
 
@@ -280,10 +322,13 @@ class MainPageFragment : Fragment(), ProductOnClickListener, LocationOnClickList
         UserManager.addUser(User.getDummyData())
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         _binding = null
 
-        super.onDestroy()
+        super.onDestroyView()
     }
 
+    companion object {
+        const val MAIN_PAGE_FRAGMENT_TAG = "mainPageFragment"
+    }
 }
